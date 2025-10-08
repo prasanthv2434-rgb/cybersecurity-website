@@ -1,6 +1,7 @@
 {
   "name": "cybersecurity-website",
   "version": "1.0.0",
+  "type": "module",  
   "description": "Personal/portfolio website with Express and MongoDB",
   "main": "server.js",
   "scripts": {
