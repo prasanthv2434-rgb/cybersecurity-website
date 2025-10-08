@@ -64,8 +64,4 @@ app.get("/admin/messages", async (req, res) => {
   }
 });
 
-const password = prompt("Enter admin password:");
-if (password !== "Krishna123") {
-  alert("Access denied!");
-  window.location.href = "/";
-}
+
