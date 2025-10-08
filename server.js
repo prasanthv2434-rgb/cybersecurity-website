@@ -1,9 +1,15 @@
-import express from express;
-import cors  from cors;
-import bodyParser  from body-parser;
-import mongoose  from mongoose;
-import path  from path;
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import path from "path";
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -44,14 +50,10 @@ app.post("/contact", async (req, res) => {
     await newMsg.save();
     res.status(200).json({ message: "Form saved successfully!" });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Error saving form data" });
   }
 });
-
-// Port for Render or local
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🌐 Server running on port ${PORT}`));
-
 
 // Admin route to fetch all messages
 app.get("/admin/messages", async (req, res) => {
@@ -64,4 +66,6 @@ app.get("/admin/messages", async (req, res) => {
   }
 });
 
-
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🌐 Server running on port ${PORT}`));
