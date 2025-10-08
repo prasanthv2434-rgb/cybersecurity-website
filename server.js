@@ -1,12 +1,53 @@
 const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const path = require("path");
+require("dotenv").config();
+
 const app = express();
 
-// Serve all static files from current folder
-app.use(express.static(__dirname));
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
 
+// Serve static files
+app.use(express.static(path.join(__dirname)));
+
+// Route for home page
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Cybersecurity Website running on port ${port}`));
+// Connect to MongoDB Atlas
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.error("❌ DB Error:", err));
+
+// Schema for contact form
+const MessageSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  phone: String,
+  company: String,
+  inquiryType: String,
+  message: String,
+  date: { type: Date, default: Date.now }
+});
+
+const Message = mongoose.model("Message", MessageSchema);
+
+// API endpoint for contact form
+app.post("/contact", async (req, res) => {
+  try {
+    const newMsg = new Message(req.body);
+    await newMsg.save();
+    res.status(200).json({ message: "Form saved successfully!" });
+  } catch (error) {
+    res.status(500).json({ error: "Error saving form data" });
+  }
+});
+
+// Port for Render or local
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🌐 Server running on port ${PORT}`));

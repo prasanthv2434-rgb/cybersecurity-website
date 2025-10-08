@@ -26,8 +26,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contactForm) {
         contactForm.addEventListener('submit', function(event) {
             event.preventDefault();
-            alert('Thank you for your message! We will get back to you shortly.');
-            this.reset();
+            const formData = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value,
+    company: document.getElementById("company").value,
+    inquiryType: document.getElementById("inquiry-type").value,
+    message: document.getElementById("message").value
+};
+
+try {
+    const res = await fetch("https://your-render-server.onrender.com/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+    });
+
+    const data = await res.json();
+    alert(data.message || "Message sent successfully!");
+    contactForm.reset();
+} catch (error) {
+    alert("Something went wrong. Please try again later.");
+}
+
         });
     }
 });
