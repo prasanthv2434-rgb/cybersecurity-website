@@ -1,3 +1,41 @@
+<script>
+  // Simple password check
+  const password = prompt("Enter admin password:");
+  if (password !== "Krishna123") {
+    alert("Access denied!");
+    window.location.href = "/"; // redirect to homepage
+  }
+
+  // Then fetch messages only if password is correct
+  async function fetchMessages() {
+      try {
+          const res = await fetch("/admin/messages");
+          const data = await res.json();
+          const tbody = document.getElementById("messagesBody");
+          tbody.innerHTML = "";
+          data.forEach(msg => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                  <td>${msg.name}</td>
+                  <td>${msg.email}</td>
+                  <td>${msg.phone || ""}</td>
+                  <td>${msg.company || ""}</td>
+                  <td>${msg.inquiryType || ""}</td>
+                  <td>${msg.message}</td>
+                  <td>${new Date(msg.date).toLocaleString()}</td>
+              `;
+              tbody.appendChild(row);
+          });
+      } catch (error) {
+          console.error("Cannot fetch messages:", error);
+      }
+  }
+
+  fetchMessages();
+</script>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
