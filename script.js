@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Contact form submission logic (if you want to keep it)
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
-        contactForm.addEventListener('submit', function(event) {
+        contactForm.addEventListener('submit', async(event) =>
+{
             event.preventDefault();
             const formData = {
     name: document.getElementById("name").value,
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 };
 
 try {
-    const res = await fetch("https://your-render-server.onrender.com/contact", {
+    const res = await fetch("https://cyberguard-cybersecurity-solutions.onrender.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
