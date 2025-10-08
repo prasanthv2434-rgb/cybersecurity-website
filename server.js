@@ -51,3 +51,21 @@ app.post("/contact", async (req, res) => {
 // Port for Render or local
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🌐 Server running on port ${PORT}`));
+
+
+// Admin route to fetch all messages
+app.get("/admin/messages", async (req, res) => {
+  try {
+    const allMessages = await Message.find().sort({ date: -1 }); // latest first
+    res.json(allMessages);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Cannot fetch messages" });
+  }
+});
+
+const password = prompt("Enter admin password:");
+if (password !== "Krishna123") {
+  alert("Access denied!");
+  window.location.href = "/";
+}
